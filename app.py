@@ -59,14 +59,15 @@ st.title("🧠 Handwritten Digit Generator (0–9)")
 st.write("Select a digit and generate 5 handwritten samples using a CVAE model trained on MNIST.")
 
 digit = st.selectbox("Choose a digit to generate", list(range(10)), index=0)
+num_images = st.slider("Number of images to generate", min_value=1, max_value=10, value=5)
 
 if st.button("🚀 Generate Images"):
-    st.info(f"Generating 5 images of digit `{digit}`...")
+    st.info(f"Generating {num_images} images of digit `{digit}`...")
     model, device = load_model()
-    images = generate_digit_images(model, digit, device=device)
+    images = generate_digit_images(model, digit, num_images=num_images, device=device)
 
-    fig, axs = plt.subplots(1, 5, figsize=(10, 2))
-    for i in range(5):
+    fig, axs = plt.subplots(1, num_images, figsize=(2*num_images, 2))
+    for i in range(num_images):
         axs[i].imshow(images[i], cmap="gray")
         axs[i].axis("off")
     st.pyplot(fig)
